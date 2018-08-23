@@ -38,6 +38,10 @@ RUN if [ ${INSTALL_PGSQL} = true ]; then \
         && docker-php-ext-install pdo_pgsql \
 ;fi
 
+# Install Nodejs:
+RUN apk --update add nodejs \
+    && npm config set registry http://registry.npm.taobao.org/
+
 RUN rm /var/cache/apk/* \
     && mkdir -p /var/www
 
