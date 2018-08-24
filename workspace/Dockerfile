@@ -211,11 +211,6 @@ USER laradock
 RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com && \
     composer config -g process-timeout 2000
 
-Run whoami
-Run echo $PATH
-RUN which node
-RUN which npm
-
 Run npm --registry https://registry.npm.taobao.org install -g cnpm cyarn nrm && \
     npm config set registry https://registry.npm.taobao.org
 
