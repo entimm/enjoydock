@@ -39,8 +39,7 @@ RUN if [ ${INSTALL_PGSQL} = true ]; then \
 ;fi
 
 # Install Nodejs:
-RUN apk --update add nodejs \
-    && npm config set registry http://registry.npm.taobao.org/
+RUN apk --update add nodejs
 
 RUN rm /var/cache/apk/* \
     && mkdir -p /var/www
