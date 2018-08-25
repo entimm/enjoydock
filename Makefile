@@ -17,6 +17,7 @@ list:
 	@echo "  home"
 	@echo "  clean"
 	@echo "  logs"
+	@echo "  supervisor"
 
 mysql-dump:
 	@mkdir -p data/dumps
@@ -54,7 +55,7 @@ clean:
 logs:
 	@docker-compose logs -f
 
-supervisorctl:
+supervisor:
 	@docker-compose exec php-worker supervisorctl reload
 
 .PHONY: home logs nginx
