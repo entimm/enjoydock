@@ -1,9 +1,26 @@
 include .env
 
+list:
+	@echo ""
+	@echo "usage: make COMMAND"
+	@echo ""
+	@echo "Commands:"
+	@echo "  list"
+	@echo "  mysql-dump"
+	@echo "  mysql-restore"
+	@echo "  mysql-backup-data"
+	@echo "  mysql-restore-data"
+	@echo "  nginx-t"
+	@echo "  nginx-reload"
+	@echo "  fpm-restart"
+	@echo "  cron-update"
+	@echo "  home"
+	@echo "  clean"
+	@echo "  logs"
+
 mysql-dump:
 	@mkdir -p data/dumps
 	@docker exec $(docker-compose ps -q mysql) mysqldump --all-databases -u"root" -p"$(MYSQL_ROOT_PASSWORD)" > data/dumps/db.sql 2 > /dev/null
-	@make resetOwner
 
 mysql-restore:
 	@docker exec -i $(docker-compose ps -q mysql) mysql -u"root" -p"root" < data/dumps/db.sql 2 > /dev/null
@@ -23,7 +40,7 @@ nginx-reload:
 fpm-restart:
 	@docker-compose exec php-fpm kill -USR2 1
 
-cron-reload:
+cron-update:
 	@docker ./workspace/crontab/* $(docker-compose ps -q workspace):/etc/cron.d
 	@docker-compose exec workspace chmod -R 644 /etc/cron.d
 
