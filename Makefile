@@ -55,7 +55,10 @@ clean:
 logs:
 	@docker-compose logs -f
 
-supervisor:
+supervisor-reload:
 	@docker-compose exec php-worker supervisorctl reload
+
+supervisor-status:
+	@docker-compose exec php-worker supervisorctl status
 
 .PHONY: home logs nginx
