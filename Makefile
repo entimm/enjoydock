@@ -38,7 +38,7 @@ nginx-reload:
 	@docker-compose exec nginx nginx -s reload
 
 fpm-restart:
-	@docker-compose exec php-fpm kill -USR2 1
+	@docker-compose restart php-fpm
 
 cron-update:
 	@docker cp ./workspace/crontab/* $(shell docker-compose ps -q workspace):/etc/cron.d
@@ -53,5 +53,8 @@ clean:
 
 logs:
 	@docker-compose logs -f
+
+supervisorctl:
+	@docker-compose exec php-worker supervisorctl reload
 
 .PHONY: home logs nginx
