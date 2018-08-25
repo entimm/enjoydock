@@ -34,15 +34,15 @@ mysql-dump:
 	@docker exec $(MYSQL_CONTAINER) mysqldump --all-databases -u"root" -p"$(MYSQL_ROOT_PASSWORD)" > $(DUMPS_PATH)/$(DATE).sql 2>/dev/null
 	@ln -nfs $(DUMPS_PATH)/$(DATE).sql $(DUMPS_PATH)/latest.sql
 
-mysql-restore:
+mysql-load:
 	@docker exec -i $(MYSQL_CONTAINER) mysql -u"root" -p"root" < $(DUMPS_PATH)/$(SOURCE).sql 2>/dev/null
 
-mysql-backup-data:
+mysql-backup:
 	@mkdir -p $(BACKUPS_PATH)
 	@docker run --rm --volumes-from $(MYSQL_CONTAINER) -v $(BACKUPS_PATH):/backup busybox tar cvf /backup/$(DATE).tar /var/lib/mysql
 	@ln -nfs $(BACKUPS_PATH)/$(DATE).tar $(BACKUPS_PATH)/latest.tar
 
-mysql-restore-data:
+mysql-restore:
 	@docker run --rm --volumes-from $(MYSQL_CONTAINER) -v $(BACKUPS_PATH):/backup busybox sh -c "cd /var/lib/mysql && tar xvf /backups/$(SOURCE).tar --strip 1"
 
 nginx-t:
