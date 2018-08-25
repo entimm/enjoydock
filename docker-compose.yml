@@ -13,6 +13,8 @@ volumes:
     driver: ${VOLUMES_DRIVER}
   redis:
     driver: ${VOLUMES_DRIVER}
+  crontab:
+    driver: ${VOLUMES_DRIVER}
 
 services:
   nginx:
@@ -64,7 +66,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=${WORKSPACE_TIMEZONE}
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - ${MYSQL_STORAGE}:/var/lib/mysql
     networks:
       - backend
 
@@ -74,7 +76,7 @@ services:
     ports:
       - "${REDIS_PORT}:6379"
     volumes:
-      - ${DATA_PATH_HOST}/redis:/data
+      - ${REDIS_STORAGE}:/data
     networks:
       - backend
 
@@ -87,6 +89,7 @@ services:
       - "${WORKSPACE_SSH_PORT}:22"
     volumes:
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      - ${CRONTAB_STORAGE}:/etc/cron.d
     tty: true
     networks:
       - frontend
@@ -107,7 +110,7 @@ services:
   memcached:
     build: ./memcached
     volumes:
-      - ${DATA_PATH_HOST}/memcached:/var/lib/memcached
+      - ${MEMCACHED_STORAGE}:/var/lib/memcached
     ports:
       - "${MEMCACHED_HOST_PORT}:11211"
     depends_on:
