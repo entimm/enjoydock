@@ -85,6 +85,7 @@ services:
       context: ./workspace
       args:
         - NODE_VERSION=${NODE_VERSION}
+    restart: always
     ports:
       - "${WORKSPACE_SSH_PORT}:22"
     volumes:
@@ -98,6 +99,7 @@ services:
   php-worker:
     build:
       context: ./php-worker
+    restart: always
     volumes:
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
       - ${PHPWORKER_supervisord_PATH}:/etc/supervisord.d
@@ -109,6 +111,7 @@ services:
 
   memcached:
     build: ./memcached
+    restart: always
     volumes:
       - ${MEMCACHED_STORAGE}:/var/lib/memcached
     ports:
