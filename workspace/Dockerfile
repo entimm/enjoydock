@@ -343,7 +343,7 @@ RUN chmod -R 644 /etc/cron.d
 # Check PHP version:
 ###########################################################################
 
-RUN php -v | head -n 1 | grep -q "PHP ${LARADOCK_PHP_VERSION}."
+RUN php -v | head -n 1 | grep -q "PHP 7.2."
 
 #
 #--------------------------------------------------------------------------
