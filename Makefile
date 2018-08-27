@@ -27,7 +27,10 @@ list:
 	@echo "  home"
 	@echo "  clean"
 	@echo "  logs"
-	@echo "  supervisor"
+	@echo "  supervisor-reload"
+	@echo "  supervisor-status"
+	@echo "  config-pull"
+	@echo "  config-push"
 
 mysql-dump:
 	@mkdir -p $(DUMPS_PATH)
@@ -74,9 +77,13 @@ supervisor-reload:
 supervisor-status:
 	@docker-compose exec php-worker supervisorctl status
 
-config-sync:
-	@rsync -azP -e 'ssh -A'  ${SYNC_SERVER_USER}@${SYNC_SERVER_ADDR}:${SYNC_SERVER_PATH}/nginx/sites/* ./nginx/sites
-	@rsync -azP -e 'ssh -A'  ${SYNC_SERVER_USER}@${SYNC_SERVER_ADDR}:${SYNC_SERVER_PATH}/php-worker/supervisord.d/* ./php-worker/supervisord.d
+config-pull:
+	@rsync -az -e 'ssh -A' ${SYNC_SERVER_USER}@${SYNC_SERVER_ADDR}:${SYNC_SERVER_PATH}/nginx/sites/* ./nginx/sites
+	@rsync -az -e 'ssh -A' ${SYNC_SERVER_USER}@${SYNC_SERVER_ADDR}:${SYNC_SERVER_PATH}/php-worker/supervisord.d/* ./php-worker/supervisord.d
+
+config-push:
+	@rsync -az -e 'ssh -A' ./nginx/sites/* ${SYNC_SERVER_USER}@${SYNC_SERVER_ADDR}:${SYNC_SERVER_PATH}/nginx/sites
+	@rsync -az -e 'ssh -A' ./php-worker/supervisord.d/* ${SYNC_SERVER_USER}@${SYNC_SERVER_ADDR}:${SYNC_SERVER_PATH}/php-worker/supervisord.d
 
 .PHONY: home logs nginx
 
