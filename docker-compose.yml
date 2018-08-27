@@ -102,7 +102,7 @@ services:
     restart: always
     volumes:
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-      - ${PHPWORKER_supervisord_PATH}:/etc/supervisord.d
+      - ${PHPWORKER_SUPERVISORD_PATH}:/etc/supervisord.d
       - ${PHPWORKER_LOG_PATH}:/var/log/supervisor
     depends_on:
       - workspace
