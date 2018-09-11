@@ -25,6 +25,10 @@ RUN apk --update add wget \
 RUN docker-php-ext-install mysqli mbstring pdo pdo_mysql tokenizer xml pcntl
 RUN pecl channel-update pecl.php.net && pecl install memcached mcrypt-1.0.1 && docker-php-ext-enable memcached
 
+RUN apk add zlib-dev \
+    && docker-php-ext-configure zip \
+    && docker-php-ext-install zip
+
 #Install BCMath package:
 ARG INSTALL_BCMATH=true
 RUN if [ ${INSTALL_BCMATH} = true ]; then \
