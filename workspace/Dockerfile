@@ -238,64 +238,6 @@ Run if [ ${INSTALL_NPM_GULP} = true ]; then \
     ;fi
 
 ###########################################################################
-# Laravel Envoy:
-###########################################################################
-
-USER laradock
-
-ARG INSTALL_LARAVEL_ENVOY=true
-
-RUN if [ ${INSTALL_LARAVEL_ENVOY} = true ]; then \
-    # Install the Laravel Envoy
-    composer global require "laravel/envoy=~1.0" \
-;fi
-
-###########################################################################
-# Deployer:
-###########################################################################
-
-USER root
-
-ARG INSTALL_DEPLOYER=true
-
-RUN if [ ${INSTALL_DEPLOYER} = true ]; then \
-    # Install the Deployer
-    # Using Phar as currently there is no support for laravel 4 from composer version
-    # Waiting to be resolved on https://github.com/deployphp/deployer/issues/1552
-    curl -LO https://deployer.org/deployer.phar && \
-    mv deployer.phar /usr/local/bin/dep && \
-    chmod +x /usr/local/bin/dep \
-;fi
-
-###########################################################################
-# Linuxbrew:
-###########################################################################
-
-USER root
-
-ARG INSTALL_LINUXBREW=true
-
-RUN if [ ${INSTALL_LINUXBREW} = true ]; then \
-    # Preparation
-    apt-get upgrade -y && \
-    apt-get install -y build-essential make cmake scons curl git \
-      ruby autoconf automake autoconf-archive \
-      gettext libtool flex bison \
-      libbz2-dev libcurl4-openssl-dev \
-      libexpat-dev libncurses-dev && \
-    # Install the Linuxbrew
-    git clone --depth=1 https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew && \
-    echo "" >> ~/.bashrc && \
-    echo 'export PKG_CONFIG_PATH"=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc && \
-    # Setup linuxbrew
-    echo 'export LINUXBREWHOME="$HOME/.linuxbrew"' >> ~/.bashrc && \
-    echo 'export PATH="$LINUXBREWHOME/bin:$PATH"' >> ~/.bashrc && \
-    echo 'export MANPATH="$LINUXBREWHOME/man:$MANPATH"' >> ~/.bashrc && \
-    echo 'export PKG_CONFIG_PATH="$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc && \
-    echo 'export LD_LIBRARY_PATH="$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc \
-;fi
-
-###########################################################################
 # PYTHON:
 ###########################################################################
 
