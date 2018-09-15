@@ -58,7 +58,7 @@ fpm-restart:
 	@docker-compose restart php-fpm
 
 cron-update:
-	@docker cp ./workspace/crontab/* $(WORKSPACE_CONTAINER):/etc/cron.d
+	@docker cp ./config/crontab/* $(WORKSPACE_CONTAINER):/etc/cron.d
 	@docker-compose exec workspace chmod -R 644 /etc/cron.d
 
 home:

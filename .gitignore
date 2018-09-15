@@ -1,5 +1,8 @@
+.env
+
+docker-compose.override.yml
+
 logs/
 data/
-.env
 www/
 home/
