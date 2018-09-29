@@ -45,8 +45,15 @@ RUN if [ ${INSTALL_PGSQL} = true ]; then \
 # Install Nodejs:
 RUN apk --update add nodejs
 
-RUN rm /var/cache/apk/* \
-    && mkdir -p /var/www
+#
+#--------------------------------------------------------------------------
+# Crontab
+#--------------------------------------------------------------------------
+#
+
+COPY ./crontab /etc/crontabs
+
+RUN chmod -R 644 /etc/crontabs
 
 #
 #--------------------------------------------------------------------------
@@ -63,15 +70,6 @@ ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
 
 #
 #--------------------------------------------------------------------------
-# Optional Software's Installation
-#--------------------------------------------------------------------------
-#
-# If you need to modify this image, feel free to do it right here.
-#
-    # -- Your awesome modifications go here -- #
-
-#
-#--------------------------------------------------------------------------
 # Check PHP version
 #--------------------------------------------------------------------------
 #
@@ -83,5 +81,8 @@ RUN php -v | head -n 1 | grep -q "PHP ${PHP_VERSION}."
 # Final Touch
 #--------------------------------------------------------------------------
 #
+
+RUN rm /var/cache/apk/* \
+    && mkdir -p /var/www
 
 WORKDIR /etc/supervisor/conf.d/

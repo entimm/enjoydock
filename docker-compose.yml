@@ -51,6 +51,21 @@ services:
     networks:
       - backend
 
+  php-worker:
+    build:
+      context: ./php-worker
+    restart: always
+    volumes:
+      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      - ${PHPWORKER_SUPERVISORD_PATH}:/etc/supervisord.d
+      - ${PHPWORKER_LOG_PATH}:/var/log/supervisor
+      - ${CRONTAB_STORAGE}:/etc/crontabs
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - backend
+
   mysql:
     build:
       context: ./mysql
@@ -90,23 +105,9 @@ services:
       - "${WORKSPACE_SSH_PORT}:22"
     volumes:
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-      - ${CRONTAB_STORAGE}:/etc/cron.d
     tty: true
     networks:
       - frontend
-      - backend
-
-  php-worker:
-    build:
-      context: ./php-worker
-    restart: always
-    volumes:
-      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-      - ${PHPWORKER_SUPERVISORD_PATH}:/etc/supervisord.d
-      - ${PHPWORKER_LOG_PATH}:/var/log/supervisor
-    depends_on:
-      - workspace
-    networks:
       - backend
 
   memcached:

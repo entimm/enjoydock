@@ -2,6 +2,7 @@ include .env
 
 MYSQL_CONTAINER = $(shell docker-compose ps -q mysql)
 WORKSPACE_CONTAINER = $(shell docker-compose ps -q workspace)
+PHPWORKER_CONTAINER = $(shell docker-compose ps -q php-worker)
 
 DATE = $(shell date +%y%m%d-%H%M%S)
 
@@ -58,8 +59,8 @@ fpm-restart:
 	@docker-compose restart php-fpm
 
 cron-update:
-	@docker cp ./crontab/* $(WORKSPACE_CONTAINER):/etc/cron.d
-	@docker-compose exec workspace chmod -R 644 /etc/cron.d
+	@docker cp ./php-worker/crontab/* $(PHPWORKER_CONTAINER):/etc/crontabs
+	@docker-compose exec php-worker chmod -R 644 /etc/crontabs
 
 home:
 	@rm -Rf ./home
