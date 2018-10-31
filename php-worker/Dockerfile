@@ -42,6 +42,11 @@ RUN if [ ${INSTALL_PGSQL} = true ]; then \
         && docker-php-ext-install pdo_pgsql \
 ;fi
 
+#Install redis package:
+RUN pecl install -o -f redis && \
+    rm -rf /tmp/pear && \
+    docker-php-ext-enable redis
+
 # Install Nodejs:
 RUN apk --update add nodejs
 
