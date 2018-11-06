@@ -82,6 +82,7 @@ services:
       - TZ=${WORKSPACE_TIMEZONE}
     volumes:
       - ${MYSQL_STORAGE}:/var/lib/mysql
+      - ${MYSQL_LOG_PATH}:/var/log/mysql
     networks:
       - backend
 
